@@ -1,0 +1,29 @@
+{
+  "name": "challenger-01",
+  "version": "1.0.0",
+  "description": "## Contexto Você está desenvolvendo um sistema para um comparador de preços que precisa identificar quando diferentes supermercados vendem o mesmo produto, mesmo quando os nomes têm pequenas variações.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaelcaet/challenger-01.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafaelcaet/challenger-01/issues"
+  },
+  "homepage": "https://github.com/rafaelcaet/challenger-01#readme",
+  "dependencies": {
+    "@fastify/cors": "^11.0.0",
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
