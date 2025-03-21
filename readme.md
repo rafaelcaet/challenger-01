@@ -1,247 +1,132 @@
-# Code Challenge: Categorização
+# Challenger - 01
 
-## Contexto
-Você está desenvolvendo um sistema para um comparador de preços que precisa identificar quando diferentes supermercados vendem o mesmo produto, mesmo quando os nomes têm pequenas variações.
+## Descrição
 
-## Objetivo
-Desenvolver um algoritmo inteligente que categorize produtos de supermercado.
+API desenvolvida para um comparador de preços que identifica produtos similares entre diferentes supermercados, mesmo quando os nomes dos produtos apresentam pequenas variações.
 
-1. **Produtos equivalentes de diferentes supermercados, mesmo com variações na descrição**
-   - Exemplo: "Arroz Branco Tio João 5kg" e "Arroz Tio João Branco 5kg" são o mesmo produto.
+## Bibliotecas Utilizadas
 
-2. **Produtos similares mas distintos**
-   - Exemplo: "Arroz Branco Tio João 5kg" e "Arroz Integral Tio João 5kg" são produtos diferentes.
+- **Fastify**
+- **@fastify/cors**: habilitar CORS
+- **Natural**: lib para processamento de linguagem natural
 
-3. **Produtos com tamanhos/quantidades diferentes**
-   - Exemplo: "Leite Integral Italac 1L" e "Leite Integral Italac 2L" devem ser categorizados separadamente.
+## Estrutura de Dados
 
-## Requisitos Técnicos
+O arquivo `src/database/data01.json` possui os dados dos produtos com a seguinte estrutura:
 
-### Obrigatórios:
-
-- NodeJS
-
-- Implementar uma função que leia o json data01 e retorne um json com os dados categorizados e contados.
-- A função deve ser capaz de identificar produtos equivalentes mesmo com:
-  - Ordem das palavras trocadas.
-  - Pequenas variações de descrição.
-  - Diferenças de capitalização.
-  
-- A função deve separar produtos com:
-  - Tipos diferentes (integral vs. desnatado).
-  - Marcas diferentes (Italac vs. Piracanjuba).
-  - Tamanhos/quantidades diferentes (1L vs. 2L).
-
-- O resultado deve incluir:
-  - Nome da categoria.
-  - Contagem de produtos.
-  - Lista de produtos na categoria.
-
-
-
-## Exemplo
-
-### Entrada
 ```json
-[
-  {
-    "id": 1,
-    "title": "Leite Integral Piracanjuba 1L",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 2,
-    "title": "Leite Piracanjuba Integral 1L",
-    "supermarket": "Supermercado B",
-  },
-  {
-    "id": 3,
-    "title": "Leite Integral Italac 1L",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 4,
-    "title": "Leite Italac Integral 1L",
-    "supermarket": "Supermercado C",
-  },
-  {
-    "id": 5,
-    "title": "Leite Parmalat Integral 1L",
-    "supermarket": "Supermercado D",
-  },
-  {
-    "id": 6,
-    "title": "Leite Desnatado Piracanjuba 1L",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 7,
-    "title": "Piracanjuba Leite Desnatado 1L",
-    "supermarket": "Supermercado B",
-  },
-  {
-    "id": 8,
-    "title": "Leite Semi-Desnatado Piracanjuba 1L",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 9,
-    "title": "Leite Piracanjuba Semi Desnatado 1 Litro",
-    "supermarket": "Supermercado C",
-  },
-  {
-    "id": 10,
-    "title": "Arroz Branco Tio João 5kg",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 11,
-    "title": "Arroz Tio João Branco 5kg",
-    "supermarket": "Supermercado B",
-  },
-  {
-    "id": 12,
-    "title": "Arroz Tio João Integral 5kg",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 13,
-    "title": "Feijão Carioca Camil 1kg",
-    "supermarket": "Supermercado A",
-  },
-  {
-    "id": 14,
-    "title": "Feijão Camil Tipo Carioca 1kg",
-    "supermarket": "Supermercado C",
-  },
-  {
-    "id": 15,
-    "title": "Feijao Carioca Camil 1 Quilo",
-    "supermarket": "Supermercado D",
-  }
-]
+{
+  "id": number,
+  "title": string,
+  "supermarket": string,
+  "price": number
+}
 ```
 
-## Saída Esperada
+## Endpoints
+
+### GET /item/list
+
+Retorna todos os produtos agrupados por "similaridade".
+
+**Resposta**
+
 ```json
 [
   {
-    "category": "Leite Integral Piracanjuba 1L",
-    "count": 2,
+    "category": string,
+    "count": number,
     "products": [
       {
-        "title": "Leite Integral Piracanjuba 1L",
-        "supermarket": "Supermercado A"
-      },
-      {
-        "title": "Leite Piracanjuba Integral 1L",
-        "supermarket": "Supermercado B"
-      }
-    ]
-  },
-  {
-    "category": "Leite Integral Italac 1L",
-    "count": 2,
-    "products": [
-      {
-        "title": "Leite Integral Italac 1L",
-        "supermarket": "Supermercado A"
-      },
-      {
-        "title": "Leite Italac Integral 1L",
-        "supermarket": "Supermercado C"
-      }
-    ]
-  },
-  {
-    "category": "Leite Parmalat Integral 1L",
-    "count": 1,
-    "products": [
-      {
-        "title": "Leite Parmalat Integral 1L",
-        "supermarket": "Supermercado D"
-      }
-    ]
-  },
-  {
-    "category": "Leite Desnatado Piracanjuba 1L",
-    "count": 2,
-    "products": [
-      {
-        "title": "Leite Desnatado Piracanjuba 1L",
-        "supermarket": "Supermercado A"
-      },
-      {
-        "title": "Piracanjuba Leite Desnatado 1L",
-        "supermarket": "Supermercado B"
-      }
-    ]
-  },
-  {
-    "category": "Leite Semi-Desnatado Piracanjuba 1L",
-    "count": 2,
-    "products": [
-      {
-        "title": "Leite Semi-Desnatado Piracanjuba 1L",
-        "supermarket": "Supermercado A"
-      },
-      {
-        "title": "Leite Piracanjuba Semi Desnatado 1 Litro",
-        "supermarket": "Supermercado C"
-      }
-    ]
-  },
-  {
-    "category": "Arroz Branco Tio João 5kg",
-    "count": 2,
-    "products": [
-      {
-        "title": "Arroz Branco Tio João 5kg",
-        "supermarket": "Supermercado A"
-      },
-      {
-        "title": "Arroz Tio João Branco 5kg",
-        "supermarket": "Supermercado B"
-      }
-    ]
-  },
-  {
-    "category": "Arroz Tio João Integral 5kg",
-    "count": 1,
-    "products": [
-      {
-        "title": "Arroz Tio João Integral 5kg",
-        "supermarket": "Supermercado A"
-      }
-    ]
-  },
-  {
-    "category": "Feijão Carioca Camil 1kg",
-    "count": 3,
-    "products": [
-      {
-        "title": "Feijão Carioca Camil 1kg",
-        "supermarket": "Supermercado A"
-      },
-      {
-        "title": "Feijão Camil Tipo Carioca 1kg",
-        "supermarket": "Supermercado C"
-      },
-      {
-        "title": "Feijao Carioca Camil 1 Quilo",
-        "supermarket": "Supermercado D"
+        "id": number,
+        "title": string,
+        "supermarket": string,
+        "price": number
       }
     ]
   }
 ]
 ```
 
-Após conclusão enviar link do seu repo e info para o google [Forms](https://docs.google.com/forms/d/e/1FAIpQLSdm9_Ho3hiSuwBFZpdR-KrP6OKTHa670JGPhAlkM8lum86ZeQ/viewform?usp=dialog)
+## Solução abordada
 
-## Critérios de avaliação:
+### Algoritmo de Comparação
 
-- Maior pontuação
-- Melhor entendimento do código
-- Entrega mais rapida
+O projeto utiliza três funções principais para realizar o agrupamento de produtos similares:
 
+1. **formatTitle** (`src/utils/formatTitle.ts`)
+   - Normaliza os títulos dos produtos
+   - Remove pontuações e espaços extras
+   - Converte para minúsculas
 
+2. **calcMatchTitle** (`src/utils/calcMatchTitle.ts`)
+   - Utiliza a lib Natural para tokenização
+   - Compara palavras entre dois títulos
+   - Considera produtos similares quando há 80% de correspondência
+
+3. **readData** (`src/utils/readFile.ts`)
+   - Realiza a leitura do arquivo JSON
+   - Retorna os dados parseados para processamento
+
+### Lógica de Agrupamento
+
+O serviço (`src/services/categoryService.ts`) implementa a seguinte lógica:
+
+1. Cria um mapa de categorias
+2. Para cada produto:
+   - Normaliza o título
+   - Compara com categorias existentes
+   - Agrupa em categoria existente se houver similaridade
+   - Cria nova categoria se não encontrar correspondência
+
+## Estrutura do Projeto
+
+```
+src/
+  ├── controllers/     # Controladores da aplicação
+  ├── database/        # Arquivo JSON com dados
+  ├── helpers/         # Helpers para tratamento de erros
+  ├── routes/          # Definição das rotas
+  ├── services/        # Lógica de negócio
+  ├── types/          # Tipos TypeScript
+  ├── utils/          # Funções utilitárias
+  └── server.ts       # Arquivo principal
+```
+
+## Para rodar o Projeto
+
+Basta executar o comando abaixo para instalar as dependencias
+
+### Clone o repositorio
+
+```bash
+git clone https://github.com/rafaelcaet/challenger-01.git
+```
+
+### Instale as dependencias
+
+- utilizando NPM:
+
+```bash
+npm install
+```
+
+- utilizando YARN:
+
+```bash
+yarn
+```
+
+### Rode o Projeto
+
+- utilizando NPM
+
+```bash
+npm run start
+```
+
+- utilizando YARN:
+
+```bash
+yarn start
+```
