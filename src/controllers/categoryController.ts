@@ -1,14 +1,12 @@
-import readData from "../services/categoryService";
-
+import { listAllProducts } from "../services/categoryService";
 export default class CategoryController {
-  protected declare data: any;
+  constructor() {}
 
-  constructor(data?: any) {
-    this.data = data;
-  }
-
-  async list() {
-    const result = await readData();
-    return result;
+  /**
+   *  Lista todos os produtos
+   * @returns
+   */
+  async listAll() {
+    return listAllProducts();
   }
 }
