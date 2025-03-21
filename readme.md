@@ -15,12 +15,15 @@ API desenvolvida para um comparador de preços que identifica produtos similares
 O arquivo `src/database/data01.json` possui os dados dos produtos com a seguinte estrutura:
 
 ```json
-{
-  "id": number,
-  "title": string,
-  "supermarket": string,
-  "price": number
-}
+[
+  {
+    "id": number,
+    "title": string,
+    "supermarket": string,
+    "price": number
+  }
+]
+
 ```
 
 ## Endpoints
